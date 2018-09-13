@@ -219,7 +219,8 @@ class XLSXWriter
 			self::log( "Warning! passing $suppress_row=false|true to writeSheetHeader() is deprecated, this will be removed in a future version." );
 			$suppress_row = intval($col_options);
 		}
-    $style = &$col_options;
+
+    	$style = isset($col_options['style']) ? &$col_options['style'] : null;
 
 		$col_widths = isset($col_options['widths']) ? (array)$col_options['widths'] : array();
 		$auto_filter = isset($col_options['auto_filter']) ? intval($col_options['auto_filter']) : false;
@@ -254,7 +255,7 @@ class XLSXWriter
 			$default_column_types = $this->initializeColumnTypes( array_fill($from=0, $until=count($row), 'GENERAL') );//will map to n_auto
 			$sheet->columns = array_merge((array)$sheet->columns, $default_column_types);
 		}
-		
+
 		if (!empty($row_options))
 		{
 			$ht = isset($row_options['height']) ? floatval($row_options['height']) : 12.1;
@@ -268,7 +269,8 @@ class XLSXWriter
 			$sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="false" hidden="false" ht="12.1" outlineLevel="0" r="' . ($sheet->row_count + 1) . '">');
 		}
 
-		$style = &$row_options;
+		$style = isset($row_options['style']) ? &$row_options['style'] : null;
+
 		$c=0;
 		foreach ($row as $v) {
 			$number_format = $sheet->columns[$c]['number_format'];
